@@ -1,0 +1,336 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f6fafc 0%, #edf2f7 100%);
+      color: #0a2b2e;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.8rem 4rem;
+    }
+
+    /* header */
+    .header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(0, 70, 67, 0.08);
+      backdrop-filter: blur(2px);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #166534;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #0F3B2C, #1F8A6B);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .sub {
+      color: #2c5a4f;
+      font-size: 1.2rem;
+      font-weight: 500;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    /* main card */
+    .boost-card {
+      background: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 2rem 2rem 2.5rem;
+      max-width: 650px;
+      margin: 0 auto 2rem auto;
+      border: 1px solid #e2f0ec;
+    }
+
+    .reg-input-group {
+      margin-bottom: 1.8rem;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #1a4d3e;
+      font-size: 0.95rem;
+    }
+    .input-icon {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-icon i {
+      position: absolute;
+      left: 18px;
+      color: #2c9b7a;
+      font-size: 1.2rem;
+    }
+    input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 1.5px solid #e0ede8;
+      border-radius: 60px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: #ffffff;
+      font-family: 'Inter', monospace;
+    }
+    input:focus {
+      outline: none;
+      border-color: #1f8a6b;
+      box-shadow: 0 0 0 3px rgba(31, 138, 107, 0.15);
+    }
+    .btn-primary {
+      background: linear-gradient(105deg, #0F5B47 0%, #1C8868 100%);
+      border: none;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 10px 20px -8px rgba(12, 80, 55, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(105deg, #0a4a3a 0%, #146e53 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 25px -12px rgba(0, 0, 0, 0.25);
+    }
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-top: 2rem;
+    }
+    .feature-item {
+      background: white;
+      padding: 0.9rem 1.8rem;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e2f0ea;
+      font-weight: 500;
+      color: #1e463a;
+    }
+    .feature-item i {
+      color: #1f8a6b;
+      font-size: 1.3rem;
+    }
+
+    /* modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.2s;
+    }
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-container {
+      background: white;
+      max-width: 520px;
+      width: 90%;
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 35px 55px rgba(0, 0, 0, 0.3);
+      position: relative;
+      transform: scale(0.97);
+      transition: transform 0.2s;
+    }
+    .modal-overlay.active .modal-container {
+      transform: scale(1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .modal-header h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1b4d3e, #197c5e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #6f8f85;
+      transition: 0.1s;
+    }
+    .percent-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: space-between;
+      margin: 1.8rem 0;
+      flex-wrap: wrap;
+    }
+    .percent-btn {
+      flex: 1;
+      background: #f1f9f5;
+      border: 2px solid #cde3db;
+      padding: 1rem 0;
+      font-weight: 800;
+      font-size: 1.4rem;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #1c5e4a;
+    }
+    .percent-btn:hover {
+      background: #e0f0ea;
+      border-color: #1f8a6b;
+      transform: scale(0.97);
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    .form-group input, .reg-readonly {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 60px;
+      border: 1.5px solid #e2edf2;
+      background: #fff;
+      font-size: 0.95rem;
+    }
+    .reg-readonly {
+      background: #f4f9fc;
+      color: #1e4d3e;
+      font-weight: 500;
+    }
+    .btn-success {
+      background: #0c6e54;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    .payment-summary {
+      background: #f6fbf9;
+      padding: 1.2rem;
+      border-radius: 1.5rem;
+      margin: 1.2rem 0;
+      border-left: 5px solid #1f8a6b;
+    }
+    .account-details {
+      background: #fef7e0;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      margin: 1rem 0;
+      border: 1px solid #ffe3a3;
+      text-align: center;
+    }
+    .account-number-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      padding: 0.7rem 1rem;
+      border-radius: 60px;
+      margin: 0.8rem 0;
+      border: 1px solid #e2e8f0;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: #1f8a6b;
+      transition: 0.1s;
+    }
+    .copy-btn:hover {
+      color: #0f5b47;
+      transform: scale(1.05);
+    }
+    .toast-message {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e2f3e;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      z-index: 1100;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      display: none;
+    }
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.75rem;
+      color: #6e8f84;
+      border-top: 1px solid #e0ede8;
+      padding-top: 1.8rem;
+    }
+    .btn-payment-confirm {
+      background: #0c6e54;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+      margin-top: 1rem;
+    }
+    @media (max-width: 580px) {
+      .boost-card { padding: 1.5rem; }
+      h1 { font-size: 2.2rem; }
+      .percent-buttons { gap: 0.6rem; }
+      .percent-btn { font-size: 1.1rem; }
+    }
